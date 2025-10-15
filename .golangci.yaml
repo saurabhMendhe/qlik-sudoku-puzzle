@@ -1,0 +1,207 @@
+run:
+  # Timeout for analysis
+  timeout: 5m
+  
+  # Include test files
+  tests: true
+  
+  # Go version to target
+  go: '1.21.1'
+
+
+# Output configuration
+output:
+  # Colored output
+  formats: colored-line-number
+  
+  # Print lines of code with issue
+  print-issued-lines: true
+  
+  # Print linter name in the end of issue text
+  print-linter-name: true
+  
+  # Make issues output unique by line
+  uniq-by-line: true
+  
+  # Sort results by: filepath, line and column
+  sort-results: true
+
+linters:
+  # Disable all linters by default
+  disable-all: true
+  
+  # Enable specific linters
+  enable:
+    # Enabled by default linters:
+    - errcheck        # Check for unchecked errors
+    - gosimple        # Simplify code
+    - govet           # Report suspicious constructs
+    - ineffassign     # Detect ineffectual assignments
+    - staticcheck     # Advanced Go linter
+    - typecheck       # Type-check Go code
+    - unused          # Check for unused code
+    
+    # Additional recommended linters:
+    - gofmt           # Check formatting
+    - goimports       # Check import formatting
+    - goconst         # Find repeated strings that could be constants
+    - gocritic        # Opinionated Go linter
+    - gocyclo         # Check cyclomatic complexity
+    - revive          # Fast, configurable, extensible, flexible, and beautiful linter
+    - misspell        # Spell checker
+    - unparam         # Find unused function parameters
+    - unconvert       # Remove unnecessary type conversions
+    - prealloc        # Find slice declarations that could pre-allocate
+    - nolintlint      # Ensure nolint directives are properly formatted
+    - whitespace      # Check for unnecessary whitespace
+    - goprintffuncname # Check printf-like function names
+    - errorlint       # Find code that will cause problems with Go 1.13+ error wrapping
+    - contextcheck    # Check whether the function uses a non-inherited context
+    
+    # Code quality:
+    - gocognit        # Check cognitive complexity
+    - nestif          # Check deeply nested if statements
+    - dupl            # Code clone detection
+    
+    # Security:
+    - gosec           # Security checker
+
+linters-settings:
+  errcheck:
+    # Report about not checking errors in type assertions: `a := b.(MyStruct)`
+    check-type-assertions: true
+    
+    # Report about assignment of errors to blank identifier: `num, _ := strconv.Atoi(s)`
+    check-blank: true
+    
+    # List of functions to exclude from checking
+    exclude-functions:
+      - (*go.uber.org/zap.Logger).Sync
+  
+  govet:
+    # Enable all analyzers
+    enable-all: true
+    
+    # Disable specific analyzers
+    disable:
+      - shadow  # Can be too strict
+  
+  gocyclo:
+    # Minimal cyclomatic complexity to report
+    min-complexity: 15
+  
+  gocognit:
+    # Minimal cognitive complexity to report
+    min-complexity: 20
+  
+  dupl:
+    # Tokens count to trigger issue
+    threshold: 100
+  
+  goconst:
+    # Minimum length of string constant
+    min-len: 3
+    
+    # Minimum occurrences count to trigger
+    min-occurrences: 3
+  
+  misspell:
+    # Correct American or British English
+    locale: US
+  
+  revive:
+    # Enable all rules by default
+    ignore-generated-header: true
+    severity: warning
+    
+    rules:
+      - name: blank-imports
+      - name: context-as-argument
+      - name: context-keys-type
+      - name: dot-imports
+      - name: error-return
+      - name: error-strings
+      - name: error-naming
+      - name: exported
+      - name: if-return
+      - name: increment-decrement
+      - name: var-naming
+      - name: var-declaration
+      - name: package-comments
+      - name: range
+      - name: receiver-naming
+      - name: time-naming
+      - name: unexported-return
+      - name: indent-error-flow
+      - name: errorf
+      - name: empty-block
+      - name: superfluous-else
+      - name: unused-parameter
+      - name: unreachable-code
+      - name: redefines-builtin-id
+  
+  gosec:
+    # To select a subset of rules to run
+    includes: []
+    
+    # Exclude specific rules
+    excludes:
+      - G104  # Audit errors not checked (covered by errcheck)
+    
+    # Severity level
+    severity: medium
+    confidence: medium
+  
+  nestif:
+    # Minimal complexity of if statements to report
+    min-complexity: 4
+  
+  whitespace:
+    multi-if: true
+    multi-func: true
+
+issues:
+  # Maximum issues count per one linter
+  max-issues-per-linter: 50
+  
+  # Maximum count of issues with the same text
+  max-same-issues: 3
+  
+  # Show only new issues
+  new: false
+
+  exclude-files:
+    - regex1
+    - regex2
+  
+  # Independently of option `exclude` we use default exclude patterns
+  exclude-use-default: true
+  
+  # Exclude specific issues
+  exclude-rules:
+    # Exclude some linters from running on tests files
+    - path: _test\.go
+      linters:
+        - gocyclo
+        - errcheck
+        - dupl
+        - gosec
+        - goconst
+    
+    # Exclude magic number check in tests
+    - path: _test\.go
+      text: "mnd: Magic number"
+    
+    # Exclude lll issues for long lines with go:generate
+    - linters:
+        - lll
+      source: "^//go:generate "
+    
+    # Exclude error checks in main.go for defer statements
+    - path: main\.go
+      text: "Error return value of.*defer.*not checked"
+      linters:
+        - errcheck
+  
+  # Fix found issues (if it's supported by the linter)
+  fix: false
