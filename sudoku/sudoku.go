@@ -131,7 +131,7 @@ func ParseInput(input string) (Grid, error) {
 }
 
 func Validate(grid Grid) error {
-	for i := 0; i < 9; i++ {
+	for i := 0; i < size; i++ {
 		if err := validateRow(grid, i); err != nil {
 			return err
 		}
@@ -147,12 +147,12 @@ func Validate(grid Grid) error {
 
 func validateRow(grid Grid, row int) error {
 	seen := make(map[int]bool)
-	for col := 0; col < 9; col++ {
+	for col := 0; col < size; col++ {
 		num := grid[row][col]
 		if num == 0 {
 			continue
 		}
-		if num < 1 || num > 9 {
+		if num < 1 || num > size {
 			return fmt.Errorf("invalid number %d at position (%d,%d)", num, row, col)
 		}
 		if seen[num] {
@@ -165,7 +165,7 @@ func validateRow(grid Grid, row int) error {
 
 func validateColumn(grid Grid, col int) error {
 	seen := make(map[int]bool)
-	for row := 0; row < 9; row++ {
+	for row := 0; row < size; row++ {
 		num := grid[row][col]
 		if num == 0 {
 			continue
