@@ -89,6 +89,20 @@ clean:
 	@rm -f qlik-sudoku-puzzle
 	@rm -f coverage.out coverage.html
 
+# Docker commands
+docker-build:
+	@echo "Building Docker image..."
+	@docker build -t qlik-sudoku-puzzle:latest .
+
+docker-run:
+	@echo "Running Docker container..."
+	@docker run --rm qlik-sudoku-puzzle:latest
+
+# docker-push:
+# 	@echo "Pushing Docker image..."
+# 	@docker tag qlik-sudoku-puzzle:latest $(DOCKER_REGISTRY)/qlik-sudoku-puzzle:latest
+# 	@docker push $(DOCKER_REGISTRY)/qlik-sudoku-puzzle:latest
+
 # Show help
 help:
 	@echo "Available targets:"

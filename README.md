@@ -131,7 +131,7 @@ qlik-sudoku-puzzle/
 ├── PRESENTATION_GUIDE.md      # Code walkthrough guide
 └── .github/
     └── workflows/
-        └── ci.yml          # CI/CD pipeline
+        └── test.yml          # CI/CD pipeline
 ```
 
 ## Usage Examples
