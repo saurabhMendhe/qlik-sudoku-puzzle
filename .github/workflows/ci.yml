@@ -88,3 +88,26 @@ jobs:
     
     - name: Test run
       run: make run
+  
+  docker-build:
+    name: Docker-Build
+    runs-on: ubuntu-latest
+    needs: [build]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.21'
+    
+    - name: Build Docker
+      run: make docker-build
+    
+    - name: Run Docker
+      run: make docker-run
+
+    # - name: Push Docker
+    #   run: make docker-push
